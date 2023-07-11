@@ -1,21 +1,24 @@
-{% set data = load_setup_py_data() %}
-{% set version = data.get('version') or 'placehold' %}
+{% set name = "RESCRIPt" %}
+{% set version = "2023.5.0" %}
+{% set sha256 = "bc7aa5e4ae07adb90531a5c9d5f7bd160ae2a1934342c9658e86addaf16d302a" %}
 
 package:
-  name: rescript
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  path: ../..
+  url: https://github.com/bokulich-lab/RESCRIPt/archive/refs/tags/2023.5.0.tar.gz
+  sha256: {{ sha256 }}
 
 build:
-  script: make install
+  noarch: python
+  number: 0
+  script: {{ PYTHON }} -m pip install . --ignore-installed --no-deps -vv
 
 requirements:
   host:
     - python {{ python }}
     - setuptools
-
   run:
     - python {{ python }}
     - ncbi-datasets-pylib >=14.13.0
@@ -47,3 +50,16 @@ about:
   home: https://github.com/bokulich-lab/RESCRIPt
   license: BSD-3-Clause
   license_family: BSD
+  license_file: LICENSE
+  summary: 'REference Sequence annotation and CuRatIon Pipeline'
+  description: |
+    RESCRIPt is a python 3 package to support a variety of operations
+    for managing and curating reference sequence databases, DNA/RNA
+    sequence data, and taxonomic data.
+    See citation information below for a full benchmark and description.
+
+extra:
+  recipe-maintainers:
+    - mirand863
+  identifiers:
+    - biotools:RESCRIPt
